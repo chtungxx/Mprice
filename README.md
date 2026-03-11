@@ -1,4 +1,4 @@
-[Mv2.html](https://github.com/user-attachments/files/25897951/Mv2.html)
+[史迪仔幫你格價.html](https://github.com/user-attachments/files/25898078/default.html)
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
@@ -54,7 +54,7 @@
             border-color: transparent white transparent transparent;
         }
 
-        /* 自訂滾動條 (資料庫用) */
+        /* 自訂滾動條 */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #bae6fd; border-radius: 10px; }
@@ -77,16 +77,24 @@
             </h1>
             <p class="text-blue-100 text-sm mt-1 font-medium tracking-wide">精打細算 🌊 唔做水魚</p>
             
-            <button id="open-db-btn" class="absolute top-4 right-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2.5 rounded-2xl transition-all shadow-sm" title="我的底價庫">
+            <!-- 加入了 z-20 確保按鈕一定可以撳到 -->
+            <button id="open-db-btn" class="absolute top-4 right-4 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2.5 rounded-2xl transition-all shadow-sm" title="我的底價庫">
                 <i class="fa-solid fa-book-bookmark text-white"></i>
             </button>
         </div>
 
         <!-- 史迪仔小助手對話區塊 -->
         <div class="px-6 pt-5 pb-2 flex items-center">
-            <!-- 史迪仔插圖 (用戶提供) -->
-            <div class="w-24 h-24 mr-4 flex-shrink-0 float-anim relative overflow-hidden rounded-2xl shadow-md border-2 border-white">
-                <img src="IMG_0351.jpeg" alt="史迪仔" class="w-full h-full object-cover object-center scale-110">
+            <!-- 史迪仔插圖 (加入防錯設計，如果圖片未準備好會顯示提示) -->
+            <div class="w-24 h-24 mr-4 flex-shrink-0 float-anim relative overflow-hidden rounded-2xl shadow-md border-2 border-white bg-blue-50 flex flex-col justify-center items-center">
+                <!-- 真正的圖片 (src 必須對應你放落 Koder 嘅檔案名) -->
+                <img src="IMG_0351.jpeg" alt="史迪仔" class="w-full h-full object-cover object-center scale-110 absolute inset-0 z-10" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                
+                <!-- 備用顯示 (當圖片找不到時顯示，方便你除錯) -->
+                <div class="hidden flex-col items-center justify-center z-0 w-full h-full bg-sky-50">
+                    <i class="fa-solid fa-image text-blue-300 text-2xl"></i>
+                    <p class="text-[10px] text-blue-400 mt-1 leading-tight text-center font-bold">請將照片<br>放同一個Folder</p>
+                </div>
             </div>
             
             <!-- 對話框 -->
@@ -141,7 +149,7 @@
             </button>
         </div>
 
-        <!-- 結果顯示區 (微透明毛玻璃) -->
+        <!-- 結果顯示區 -->
         <div id="result-section" class="hidden bg-white/50 backdrop-blur-sm border-t border-sky-100/50 p-6 text-center rounded-b-[2rem]">
             <h3 class="text-sm text-sky-600 font-bold uppercase tracking-widest mb-1 flex items-center justify-center">
                 <i class="fa-solid fa-water text-sky-300 mr-2"></i> 計算結果
@@ -168,7 +176,7 @@
         </div>
     </div>
 
-    <!-- 資料庫管理 Modal (夏威夷風格) -->
+    <!-- 資料庫管理 Modal -->
     <div id="db-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center hidden z-50 px-4">
         <div class="bg-white/95 rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden border border-white">
             
@@ -195,7 +203,7 @@
         </div>
     </div>
 
-    <!-- === 以下為 100% 邏輯保留區 (完全未改動計算與資料庫邏輯) === -->
+    <!-- 邏輯腳本 -->
     <script>
         const defaultDB = {
             "25cm": { price: 35.9/36, totalPrice: 35.9, quantity: 36, remarks: "laurier 買一送一" },
@@ -236,31 +244,39 @@
         const saveDbModalBtn = document.getElementById('save-db-modal-btn');
         const resetDbBtn = document.getElementById('reset-db-btn');
         
-        // 史迪仔對話文字元素
         const stitchMessage = document.getElementById('stitch-message');
 
         function loadDatabase() {
-            const savedData = localStorage.getItem('mPadTargetPricesV3');
-            if (savedData) {
-                try { currentDB = JSON.parse(savedData); } 
-                catch (e) { currentDB = JSON.parse(JSON.stringify(defaultDB)); }
-            } else {
-                const oldData = localStorage.getItem('mPadTargetPricesV2');
-                if (oldData) {
-                    try {
+            try {
+                const savedData = localStorage.getItem('mPadTargetPricesV3');
+                if (savedData) {
+                    currentDB = JSON.parse(savedData);
+                } else {
+                    const oldData = localStorage.getItem('mPadTargetPricesV2');
+                    if (oldData) {
                         const oldDB = JSON.parse(oldData);
                         currentDB = {};
                         for (const key in oldDB) {
                             currentDB[key] = {
-                                price: oldDB[key].price,
-                                totalPrice: oldDB[key].totalPrice || oldDB[key].price,
+                                price: oldDB[key].price || 0,
+                                totalPrice: oldDB[key].totalPrice || oldDB[key].price || 0,
                                 quantity: oldDB[key].quantity || 1,
                                 remarks: oldDB[key].remarks || ""
                             };
                         }
-                    } catch (e) { currentDB = JSON.parse(JSON.stringify(defaultDB)); }
-                } else {
-                     currentDB = JSON.parse(JSON.stringify(defaultDB));
+                    } else {
+                        currentDB = JSON.parse(JSON.stringify(defaultDB));
+                    }
+                }
+            } catch (e) {
+                currentDB = JSON.parse(JSON.stringify(defaultDB));
+            }
+
+            // 【終極防錯機制】：確保所有讀出來嘅資料都係正確 Object 格式
+            for (let key in currentDB) {
+                if (typeof currentDB[key] !== 'object' || currentDB[key] === null) {
+                    let val = parseFloat(currentDB[key]) || 0;
+                    currentDB[key] = { price: val, totalPrice: val, quantity: 1, remarks: "" };
                 }
             }
         }
@@ -280,10 +296,9 @@
             }
             resultSection.classList.add('hidden');
             
-            // 重置史迪仔說話
             stitchMessage.textContent = '史迪仔準備好啦！快啲入錢同數量！';
             stitchMessage.parentElement.classList.remove('bounce-in');
-            void stitchMessage.parentElement.offsetWidth; // 觸發重繪以重啟動畫
+            void stitchMessage.parentElement.offsetWidth; 
             stitchMessage.parentElement.classList.add('bounce-in');
         });
 
@@ -323,7 +338,6 @@
             resultSection.classList.remove('hidden');
             resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             
-            // 讓語錄框彈跳一下
             stitchMessage.parentElement.classList.remove('bounce-in');
             void stitchMessage.parentElement.offsetWidth;
             stitchMessage.parentElement.classList.add('bounce-in');
@@ -337,7 +351,7 @@
             
             if (currentDB.hasOwnProperty(size)) {
                 const targetData = currentDB[size];
-                const targetPrice = targetData.price;
+                const targetPrice = targetData.price || 0;
                 
                 if (targetData.remarks) {
                     dbRemarksText.textContent = `📝 紀錄備註: ${targetData.remarks}`;
@@ -345,7 +359,6 @@
                 }
                 
                 if (calculatedUnitPrice < targetPrice - 0.005) {
-                    // 破底價
                     verdictBox.classList.add('bg-amber-50', 'border-amber-300', 'text-amber-700');
                     verdictIcon.innerHTML = '<i class="fa-solid fa-trophy text-amber-400"></i>';
                     verdictText.textContent = '嘩！破底價！平過以前！';
@@ -353,34 +366,28 @@
                     updateDbContainer.classList.remove('hidden');
                     updateDbText.textContent = `將 $${calculatedUnitPrice.toFixed(2)} 設為新底價`;
                     
-                    // 史迪仔搞笑語錄
                     stitchMessage.textContent = '嘩！平到笑！掃晒佢返屋企！😍🏄‍♂️';
                     stitchMessage.className = 'text-sm font-bold text-amber-600 m-0';
                     
                 } else if (Math.abs(calculatedUnitPrice - targetPrice) <= 0.005) {
-                    // 平手
                     verdictBox.classList.add('bg-teal-50', 'border-teal-300', 'text-teal-700');
                     verdictIcon.innerHTML = '<i class="fa-solid fa-face-grin-stars text-teal-500"></i>';
                     verdictText.textContent = '抵買！去到你的入貨底線！';
                     referencePriceText.textContent = `(目標價：$${targetPrice.toFixed(2)}/片)`;
                     
-                    // 史迪仔搞笑語錄
                     stitchMessage.textContent = '抵呀！可以入貨啦！👍✨';
                     stitchMessage.className = 'text-sm font-bold text-teal-600 m-0';
                     
                 } else {
-                    // 貴咗
                     verdictBox.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-600');
                     verdictIcon.innerHTML = '<i class="fa-solid fa-hand-holding-dollar text-rose-400"></i>';
                     verdictText.textContent = '較平時貴，建議再格價！';
                     referencePriceText.textContent = `(你的入貨底線：$${targetPrice.toFixed(2)}/片)`;
                     
-                    // 史迪仔搞笑語錄
                     stitchMessage.textContent = '唔好買！貴到離譜！當你水魚咩！😤🐟';
                     stitchMessage.className = 'text-sm font-bold text-rose-600 m-0';
                 }
             } else {
-                // 新尺寸
                 verdictBox.classList.add('bg-sky-50', 'border-sky-300', 'text-sky-700');
                 verdictIcon.innerHTML = '<i class="fa-solid fa-circle-info text-sky-400"></i>';
                 verdictText.textContent = '呢款尺寸暫時未有底價紀錄～';
@@ -388,7 +395,6 @@
                 updateDbContainer.classList.remove('hidden');
                 updateDbText.textContent = `新增 $${calculatedUnitPrice.toFixed(2)} 為底價`;
                 
-                // 史迪仔搞笑語錄
                 stitchMessage.textContent = '咦？呢隻未見過喎？幫你記低佢先！👽📝';
                 stitchMessage.className = 'text-sm font-bold text-blue-800 m-0';
             }
@@ -420,7 +426,7 @@
         });
 
         // ==========================================
-        // Modal 渲染 
+        // Modal 渲染 (加入防錯處理)
         // ==========================================
         function renderDbList() {
             dbList.innerHTML = '';
@@ -439,9 +445,17 @@
             });
 
             sizes.forEach((size, index) => {
-                const data = currentDB[size];
-                const price = data.price.toFixed(2);
-                const totalPrice = data.totalPrice !== undefined ? data.totalPrice : data.price;
+                let data = currentDB[size];
+                
+                // 再一次保護，防止因為舊資料導致畫面崩潰
+                if (typeof data !== 'object' || data === null) {
+                    let val = parseFloat(data) || 0;
+                    data = { price: val, totalPrice: val, quantity: 1, remarks: "" };
+                    currentDB[size] = data; // 修復
+                }
+
+                const price = (data.price || 0).toFixed(2);
+                const totalPrice = data.totalPrice !== undefined ? data.totalPrice : (data.price || 0);
                 const quantity = data.quantity !== undefined ? data.quantity : 1;
                 const remarks = data.remarks || '';
                 
@@ -499,6 +513,7 @@
                     const sizeToDelete = this.getAttribute('data-size');
                     if (confirm(`確定要刪除 ${sizeToDelete} 的紀錄嗎？`)) {
                         delete currentDB[sizeToDelete];
+                        saveDatabase(); // 立即儲存
                         renderDbList(); 
                     }
                 });
@@ -554,7 +569,6 @@
                 renderDbList();
             }
         });
-<img width="808" height="738" alt="IMG_0351" src="https://github.com/user-attachments/assets/782d58f3-a800-404c-aa4d-3479c1bd7624" />
 
     </script>
 </body>
