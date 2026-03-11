@@ -1,5 +1,4 @@
-[史迪仔幫你格價.html](https://github.com/user-attachments/files/25898078/default.html)
-<!DOCTYPE html>
+[史迪仔計價格V5.html](https://github.com/user-attachments/files/25898237/V5.html)[Uploa<!DOCTYPE html>
 <html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
@@ -10,51 +9,44 @@
     <title>衛生巾格價神器 - 史迪仔版</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 自動修復圖片副檔名嘅小程式 -->
+    <script>
+        function handleImageError(img) {
+            if (!img.dataset.triedJpg) {
+                img.dataset.triedJpg = 'true';
+                img.src = 'IMG_0351.jpg'; // 試下細楷 .jpg
+            } else if (!img.dataset.triedUpper) {
+                img.dataset.triedUpper = 'true';
+                img.src = 'IMG_0351.JPG'; // 試下大楷 .JPG
+            } else if (!img.dataset.triedJpegUpper) {
+                img.dataset.triedJpegUpper = 'true';
+                img.src = 'IMG_0351.JPEG'; // 試下大楷 .JPEG
+            } else {
+                // 如果全部都失敗，就顯示備用圖示
+                img.style.display = 'none';
+                img.nextElementSibling.style.display = 'flex';
+            }
+        }
+    </script>
+
     <style>
-        /* 輕柔的字體與全局設定 */
         body { 
-            /* 藍天白雲海邊的漸層背景 */
             background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #cffafe 100%);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             -webkit-tap-highlight-color: transparent; 
             color: #334155;
         }
-        /* 隱藏數字輸入框箭頭 */
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-        
-        /* 動畫 */
         .modal-enter { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .modal-exit { animation: fadeOut 0.3s ease-in forwards; }
         .bounce-in { animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         @keyframes fadeOut { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(10px) scale(0.98); } }
-        @keyframes bounceIn { 
-            0% { transform: scale(0.8); opacity: 0; } 
-            50% { transform: scale(1.05); opacity: 1; } 
-            100% { transform: scale(1); opacity: 1; } 
-        }
-        
-        /* 史迪仔浮動效果 */
+        @keyframes bounceIn { 0% { transform: scale(0.8); opacity: 0; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         .float-anim { animation: float 3s ease-in-out infinite; }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* 語錄框的小尾巴 */
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            left: -10px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-width: 10px 15px 10px 0;
-            border-style: solid;
-            border-color: transparent white transparent transparent;
-        }
-
-        /* 自訂滾動條 */
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0px); } }
+        .speech-bubble::after { content: ''; position: absolute; left: -10px; top: 50%; transform: translateY(-50%); border-width: 10px 15px 10px 0; border-style: solid; border-color: transparent white transparent transparent; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #bae6fd; border-radius: 10px; }
@@ -63,12 +55,10 @@
 </head>
 <body class="min-h-screen p-4 flex justify-center items-start pt-4 md:pt-10 pb-10">
     
-    <!-- 加上波浪裝飾的半透明主容器 (Glassmorphism) -->
     <div class="bg-white/80 backdrop-blur-md rounded-[2rem] shadow-[0_8px_30px_rgb(56,189,248,0.15)] w-full max-w-md overflow-hidden border border-white/60 relative mt-8">
         
-        <!-- 頂部標題列 (Stitch 藍色調) -->
+        <!-- 頂部標題列 -->
         <div class="bg-blue-500/90 text-white text-center py-5 px-4 shadow-sm relative border-b border-blue-400/50">
-            <!-- 裝飾用小元素 -->
             <div class="absolute top-2 left-3 opacity-20 text-2xl">🌺</div>
             <div class="absolute bottom-1 right-12 opacity-20 text-3xl text-sky-200"><i class="fa-solid fa-water"></i></div>
             
@@ -77,27 +67,23 @@
             </h1>
             <p class="text-blue-100 text-sm mt-1 font-medium tracking-wide">精打細算 🌊 唔做水魚</p>
             
-            <!-- 加入了 z-20 確保按鈕一定可以撳到 -->
-            <button id="open-db-btn" class="absolute top-4 right-4 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2.5 rounded-2xl transition-all shadow-sm" title="我的底價庫">
+            <button id="open-db-btn" class="absolute top-4 right-4 z-50 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2.5 rounded-2xl transition-all shadow-sm" title="我的底價庫">
                 <i class="fa-solid fa-book-bookmark text-white"></i>
             </button>
         </div>
 
-        <!-- 史迪仔小助手對話區塊 -->
+        <!-- 史迪仔小助手 -->
         <div class="px-6 pt-5 pb-2 flex items-center">
-            <!-- 史迪仔插圖 (加入防錯設計，如果圖片未準備好會顯示提示) -->
+            <!-- 史迪仔插圖 (加入防錯機制) -->
             <div class="w-24 h-24 mr-4 flex-shrink-0 float-anim relative overflow-hidden rounded-2xl shadow-md border-2 border-white bg-blue-50 flex flex-col justify-center items-center">
-                <!-- 真正的圖片 (src 必須對應你放落 Koder 嘅檔案名) -->
-                <img src="IMG_0351.jpeg" alt="史迪仔" class="w-full h-full object-cover object-center scale-110 absolute inset-0 z-10" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="IMG_0351.jpeg" alt="史迪仔" class="w-full h-full object-cover object-center scale-110 absolute inset-0 z-10" onerror="handleImageError(this)">
                 
-                <!-- 備用顯示 (當圖片找不到時顯示，方便你除錯) -->
-                <div class="hidden flex-col items-center justify-center z-0 w-full h-full bg-sky-50">
-                    <i class="fa-solid fa-image text-blue-300 text-2xl"></i>
-                    <p class="text-[10px] text-blue-400 mt-1 leading-tight text-center font-bold">請將照片<br>放同一個Folder</p>
+                <div class="hidden flex-col items-center justify-center z-0 w-full h-full bg-sky-50 text-center">
+                    <i class="fa-solid fa-image text-blue-300 text-2xl mb-1"></i>
+                    <p class="text-[9px] text-blue-400 leading-tight font-bold">請確保圖片叫<br>IMG_0351.jpeg</p>
                 </div>
             </div>
             
-            <!-- 對話框 -->
             <div class="relative bg-white rounded-2xl p-3 shadow-md border border-sky-100 flex-1 speech-bubble">
                 <p id="stitch-message" class="text-sm font-bold text-blue-800 m-0">史迪仔幫你計！Aloha！🌺</p>
             </div>
@@ -106,9 +92,7 @@
         <!-- 主要表單內容 -->
         <div class="p-6 pt-2 space-y-4">
             <div>
-                <label class="block text-slate-600 font-bold mb-2 text-sm ml-1" for="size-select">
-                    <i class="fa-solid fa-ruler text-sky-400 mr-1.5"></i> 1. 選擇尺寸
-                </label>
+                <label class="block text-slate-600 font-bold mb-2 text-sm ml-1" for="size-select"><i class="fa-solid fa-ruler text-sky-400 mr-1.5"></i> 1. 選擇尺寸</label>
                 <div class="relative">
                     <select id="size-select" class="block appearance-none w-full bg-sky-50/50 border border-sky-100 text-slate-700 py-3.5 px-4 pr-8 rounded-2xl leading-tight focus:outline-none focus:bg-white/90 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer text-lg font-medium shadow-sm">
                         <option value="" disabled selected>請選擇尺寸...</option>
@@ -131,15 +115,11 @@
 
             <div class="flex space-x-4">
                 <div class="flex-1">
-                    <label class="block text-slate-600 font-bold mb-2 text-sm ml-1" for="price-input">
-                        <i class="fa-solid fa-sack-dollar text-sky-400 mr-1.5"></i> 2. 總金額 ($)
-                    </label>
+                    <label class="block text-slate-600 font-bold mb-2 text-sm ml-1" for="price-input"><i class="fa-solid fa-sack-dollar text-sky-400 mr-1.5"></i> 2. 總金額 ($)</label>
                     <input type="number" id="price-input" placeholder="例如: 35.9" step="0.1" min="0" class="block w-full bg-sky-50/50 border border-sky-100 text-slate-700 py-3.5 px-4 rounded-2xl leading-tight focus:outline-none focus:bg-white/90 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all text-lg font-medium shadow-sm">
                 </div>
                 <div class="flex-1">
-                    <label class="block text-slate-600 font-bold mb-2 text-sm ml-1" for="quantity-input">
-                        <i class="fa-solid fa-layer-group text-sky-400 mr-1.5"></i> 3. 幾多塊？
-                    </label>
+                    <label class="block text-slate-600 font-bold mb-2 text-sm ml-1" for="quantity-input"><i class="fa-solid fa-layer-group text-sky-400 mr-1.5"></i> 3. 幾多塊？</label>
                     <input type="number" id="quantity-input" placeholder="例如: 36" step="1" min="1" class="block w-full bg-sky-50/50 border border-sky-100 text-slate-700 py-3.5 px-4 rounded-2xl leading-tight focus:outline-none focus:bg-white/90 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all text-lg font-medium shadow-sm">
                 </div>
             </div>
@@ -151,12 +131,8 @@
 
         <!-- 結果顯示區 -->
         <div id="result-section" class="hidden bg-white/50 backdrop-blur-sm border-t border-sky-100/50 p-6 text-center rounded-b-[2rem]">
-            <h3 class="text-sm text-sky-600 font-bold uppercase tracking-widest mb-1 flex items-center justify-center">
-                <i class="fa-solid fa-water text-sky-300 mr-2"></i> 計算結果
-            </h3>
-            <div class="text-4xl font-extrabold text-blue-900 mb-2 drop-shadow-sm">
-                $<span id="unit-price-display">0.00</span> <span class="text-lg text-slate-500 font-medium">/ 片</span>
-            </div>
+            <h3 class="text-sm text-sky-600 font-bold uppercase tracking-widest mb-1 flex items-center justify-center"><i class="fa-solid fa-water text-sky-300 mr-2"></i> 計算結果</h3>
+            <div class="text-4xl font-extrabold text-blue-900 mb-2 drop-shadow-sm">$<span id="unit-price-display">0.00</span> <span class="text-lg text-slate-500 font-medium">/ 片</span></div>
             
             <div id="verdict-box" class="mt-4 p-5 rounded-2xl border-2 font-bold text-lg flex flex-col items-center justify-center shadow-sm relative overflow-hidden">
                 <div id="verdict-icon" class="text-4xl mb-2 z-10"></div>
@@ -179,31 +155,24 @@
     <!-- 資料庫管理 Modal -->
     <div id="db-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center hidden z-50 px-4">
         <div class="bg-white/95 rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden border border-white">
-            
             <div class="bg-gradient-to-r from-blue-50 to-sky-50 py-5 px-6 border-b border-sky-100 flex justify-between items-center relative">
-                <h2 class="text-xl font-extrabold text-blue-900 flex items-center">
-                    <i class="fa-solid fa-book-open text-blue-400 mr-2"></i> 我的底價庫
-                </h2>
+                <h2 class="text-xl font-extrabold text-blue-900 flex items-center"><i class="fa-solid fa-book-open text-blue-400 mr-2"></i> 我的底價庫</h2>
                 <button id="close-db-btn" class="text-sky-400 hover:text-blue-600 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-sm transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="p-4 overflow-y-auto flex-1 bg-slate-50/50">
-                <p class="text-xs text-slate-500 mb-4 text-center font-medium bg-white/60 py-2 rounded-lg border border-sky-50">
-                    <i class="fa-solid fa-lightbulb text-yellow-400 mr-1"></i> 輸入總額與數量，系統自動計單價！
-                </p>
+                <p class="text-xs text-slate-500 mb-4 text-center font-medium bg-white/60 py-2 rounded-lg border border-sky-50"><i class="fa-solid fa-lightbulb text-yellow-400 mr-1"></i> 輸入總額與數量，系統自動計單價！</p>
                 <div id="db-list" class="space-y-4"></div>
             </div>
             
             <div class="bg-white/90 py-4 px-5 border-t border-sky-100 flex justify-between items-center">
                 <button id="reset-db-btn" class="text-xs text-slate-400 hover:text-red-400 font-medium transition-colors"><i class="fa-solid fa-rotate-left mr-1"></i>重置</button>
-                <button id="save-db-modal-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2.5 px-6 rounded-xl shadow-md shadow-blue-200 transition-all active:scale-95 flex items-center">
-                    <i class="fa-solid fa-check mr-2"></i> 儲存修改
-                </button>
+                <button id="save-db-modal-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2.5 px-6 rounded-xl shadow-md shadow-blue-200 transition-all active:scale-95 flex items-center"><i class="fa-solid fa-check mr-2"></i> 儲存修改</button>
             </div>
         </div>
     </div>
 
-    <!-- 邏輯腳本 -->
+    <!-- 終極防錯邏輯腳本 -->
     <script>
         const defaultDB = {
             "25cm": { price: 35.9/36, totalPrice: 35.9, quantity: 36, remarks: "laurier 買一送一" },
@@ -217,6 +186,7 @@
 
         let currentDB = {};
 
+        // 確保 DOM 元素存在，避免 JS 崩潰
         const sizeSelect = document.getElementById('size-select');
         const customSizeContainer = document.getElementById('custom-size-container');
         const customSizeInput = document.getElementById('custom-size-input');
@@ -225,44 +195,46 @@
         const calculateBtn = document.getElementById('calculate-btn');
         const resultSection = document.getElementById('result-section');
         const unitPriceDisplay = document.getElementById('unit-price-display');
-        
         const verdictBox = document.getElementById('verdict-box');
         const verdictIcon = document.getElementById('verdict-icon');
         const verdictText = document.getElementById('verdict-text');
         const referencePriceText = document.getElementById('reference-price-text');
         const dbRemarksText = document.getElementById('db-remarks-text');
-        
         const updateDbContainer = document.getElementById('update-db-container');
         const updateDbBtn = document.getElementById('update-db-btn');
         const updateDbText = document.getElementById('update-db-text');
         const newRemarkInput = document.getElementById('new-remark-input');
-
         const dbModal = document.getElementById('db-modal');
         const openDbBtn = document.getElementById('open-db-btn');
         const closeDbBtn = document.getElementById('close-db-btn');
         const dbList = document.getElementById('db-list');
         const saveDbModalBtn = document.getElementById('save-db-modal-btn');
         const resetDbBtn = document.getElementById('reset-db-btn');
-        
         const stitchMessage = document.getElementById('stitch-message');
 
+        // 【最強防死機資料讀取】
         function loadDatabase() {
             try {
-                const savedData = localStorage.getItem('mPadTargetPricesV3');
-                if (savedData) {
+                let savedData = localStorage.getItem('mPadTargetPricesV3');
+                if (savedData && savedData !== 'null' && savedData !== 'undefined') {
                     currentDB = JSON.parse(savedData);
                 } else {
-                    const oldData = localStorage.getItem('mPadTargetPricesV2');
-                    if (oldData) {
-                        const oldDB = JSON.parse(oldData);
+                    let oldData = localStorage.getItem('mPadTargetPricesV2');
+                    if (oldData && oldData !== 'null' && oldData !== 'undefined') {
+                        let oldDB = JSON.parse(oldData);
                         currentDB = {};
-                        for (const key in oldDB) {
-                            currentDB[key] = {
-                                price: oldDB[key].price || 0,
-                                totalPrice: oldDB[key].totalPrice || oldDB[key].price || 0,
-                                quantity: oldDB[key].quantity || 1,
-                                remarks: oldDB[key].remarks || ""
-                            };
+                        for (let key in oldDB) {
+                            if (oldDB[key] && typeof oldDB[key] === 'object') {
+                                currentDB[key] = {
+                                    price: parseFloat(oldDB[key].price) || 0,
+                                    totalPrice: parseFloat(oldDB[key].totalPrice || oldDB[key].price) || 0,
+                                    quantity: parseInt(oldDB[key].quantity) || 1,
+                                    remarks: oldDB[key].remarks || ""
+                                };
+                            } else {
+                                let val = parseFloat(oldDB[key]) || 0;
+                                currentDB[key] = { price: val, totalPrice: val, quantity: 1, remarks: "" };
+                            }
                         }
                     } else {
                         currentDB = JSON.parse(JSON.stringify(defaultDB));
@@ -272,13 +244,30 @@
                 currentDB = JSON.parse(JSON.stringify(defaultDB));
             }
 
-            // 【終極防錯機制】：確保所有讀出來嘅資料都係正確 Object 格式
+            // 最後清洗，確保所有資料格式100%正確
+            if (!currentDB || typeof currentDB !== 'object' || Array.isArray(currentDB)) {
+                currentDB = JSON.parse(JSON.stringify(defaultDB));
+            }
+
+            const cleanDB = {};
             for (let key in currentDB) {
-                if (typeof currentDB[key] !== 'object' || currentDB[key] === null) {
-                    let val = parseFloat(currentDB[key]) || 0;
-                    currentDB[key] = { price: val, totalPrice: val, quantity: 1, remarks: "" };
+                if (currentDB.hasOwnProperty(key)) {
+                    let item = currentDB[key];
+                    if (!item || typeof item !== 'object') {
+                        let val = parseFloat(item) || 0;
+                        cleanDB[key] = { price: val, totalPrice: val, quantity: 1, remarks: "" };
+                    } else {
+                        cleanDB[key] = {
+                            price: parseFloat(item.price) || 0,
+                            totalPrice: parseFloat(item.totalPrice) || 0,
+                            quantity: parseInt(item.quantity) || 1,
+                            remarks: item.remarks || ""
+                        };
+                    }
                 }
             }
+            currentDB = cleanDB;
+            localStorage.setItem('mPadTargetPricesV3', JSON.stringify(currentDB)); // 覆蓋爛資料
         }
 
         function saveDatabase() {
@@ -425,9 +414,6 @@
             }, 1500);
         });
 
-        // ==========================================
-        // Modal 渲染 (加入防錯處理)
-        // ==========================================
         function renderDbList() {
             dbList.innerHTML = '';
             const sizes = Object.keys(currentDB);
@@ -445,15 +431,7 @@
             });
 
             sizes.forEach((size, index) => {
-                let data = currentDB[size];
-                
-                // 再一次保護，防止因為舊資料導致畫面崩潰
-                if (typeof data !== 'object' || data === null) {
-                    let val = parseFloat(data) || 0;
-                    data = { price: val, totalPrice: val, quantity: 1, remarks: "" };
-                    currentDB[size] = data; // 修復
-                }
-
+                const data = currentDB[size];
                 const price = (data.price || 0).toFixed(2);
                 const totalPrice = data.totalPrice !== undefined ? data.totalPrice : (data.price || 0);
                 const quantity = data.quantity !== undefined ? data.quantity : 1;
@@ -513,7 +491,7 @@
                     const sizeToDelete = this.getAttribute('data-size');
                     if (confirm(`確定要刪除 ${sizeToDelete} 的紀錄嗎？`)) {
                         delete currentDB[sizeToDelete];
-                        saveDatabase(); // 立即儲存
+                        saveDatabase();
                         renderDbList(); 
                     }
                 });
@@ -572,4 +550,4 @@
 
     </script>
 </body>
-</html>
+</html>ding 史迪仔計價格V5.html…]()
